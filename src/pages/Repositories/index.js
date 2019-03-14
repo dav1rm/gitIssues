@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { View, FlatList, ActivityIndicator } from 'react-native';
 
+import Searcher from '~/components/Searcher';
 import styles from './styles';
 import Repository from './Repository';
 
@@ -60,6 +61,7 @@ export default class Repositories extends Component {
     const { loading } = this.state;
     return (
       <View style={styles.container}>
+        <Searcher />
         {loading ? <ActivityIndicator style={styles.loading} /> : this.renderList()}
       </View>
     );
