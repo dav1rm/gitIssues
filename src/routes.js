@@ -1,14 +1,14 @@
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 
 import { colors } from './styles';
-import Issues from '~/pages/Issues';
+// import Issues from '~/pages/Issues';
 import Repositories from '~/pages/Repositories';
 
 const Routes = createAppContainer(
   createStackNavigator(
     {
       Repositories,
-      Issues,
+      // Issues,
     },
     {
       initialRouteName: 'Repositories',

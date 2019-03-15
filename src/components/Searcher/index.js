@@ -7,21 +7,19 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
 
 export default class Searcher extends Component {
-  state = {
-    repository: '',
-  };
+  state = {};
 
   render() {
-    const { repository } = this.state;
+    const { search, handleTextInput, handleSubmit } = this.props;
     return (
       <View style={styles.container}>
         <TextInput
           style={styles.input}
           placeholder="Adicionar novo repositório"
-          value={repository}
-          onChangeText={text => this.setState({ repository: text })}
+          value={search}
+          onChangeText={handleTextInput}
         />
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Icon style={styles.icon} name="plus" size={20} />
         </TouchableOpacity>
       </View>
