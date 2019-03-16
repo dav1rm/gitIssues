@@ -38,6 +38,12 @@ const styles = StyleSheet.create({
   icon: {
     color: colors.darker,
   },
+
+  error: {
+    color: colors.danger,
+    marginHorizontal: metrics.baseMargin * 2,
+    paddingTop: metrics.basePadding,
+  },
 });
 
 export default styles;

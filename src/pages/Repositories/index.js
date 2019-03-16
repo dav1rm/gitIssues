@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   AsyncStorage,
+  Text,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -25,6 +26,7 @@ export default class Repositories extends Component {
     loading: false,
     refreshing: false,
     search: '',
+    error: '',
   };
 
   componentDidMount() {
@@ -33,10 +35,6 @@ export default class Repositories extends Component {
 
   handleTextInput = (text) => {
     this.setState({ search: text });
-  };
-
-  saveRepository = async (data) => {
-    await AsyncStorage.setItem('@GitIssues:repositories', JSON.stringify(data));
   };
 
   readRepositories = async () => {
@@ -50,30 +48,42 @@ export default class Repositories extends Component {
   addRepository = async () => {
     this.setState({ loading: true });
 
-    const { search } = this.state;
+    const { search, data } = this.state;
 
-    const {
-      data: {
+    if (search.length === 0) {
+      this.setState({ error: 'Digite um valor', loading: false });
+      return;
+    }
+
+    try {
+      const {
+        data: {
+          id,
+          name,
+          owner: { login, avatar_url },
+        },
+      } = await api.get(`/repos/${search}`);
+
+      const repo = {
         id,
         name,
-        owner: { login, avatar_url },
-      },
-    } = await api.get(`/repos/${search}`);
+        organization: login,
+        avatar: avatar_url,
+      };
 
-    const repo = {
-      id,
-      name,
-      organization: login,
-      avatar: avatar_url,
-    };
+      this.setState({
+        loading: false,
+        search: '',
+        data: [repo, ...data],
+      });
 
-    this.setState({
-      loading: false,
-      search: '',
-      data: [repo, ...this.state.data],
-    });
-
-    this.saveRepository(this.state.data);
+      await AsyncStorage.setItem('@GitIssues:repositories', JSON.stringify(this.state.data));
+    } catch (err) {
+      this.setState({
+        loading: false,
+        error: 'Falha ao adicionar repositório',
+      });
+    }
   };
 
   loadRepositories = async () => {
@@ -81,7 +91,7 @@ export default class Repositories extends Component {
 
     await this.readRepositories();
 
-    this.setState({ refreshing: false, loading: false });
+    this.setState({ refreshing: false, loading: false, error: '' });
   };
 
   renderListItem = ({ item }) => <Repository repository={item} />;
@@ -100,9 +110,10 @@ export default class Repositories extends Component {
   };
 
   render() {
-    const { loading, search } = this.state;
+    const { loading, search, error } = this.state;
     return (
       <View style={styles.container}>
+        {!!error && <Text style={styles.error}>{error}</Text>}
         <View style={styles.searchBar}>
           <TextInput
             style={styles.input}
