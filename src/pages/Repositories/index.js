@@ -66,16 +66,13 @@ export default class Repositories extends Component {
       organization: login,
       avatar: avatar_url,
     };
-    console.tron.log(repo);
-
-    console.tron.log(this.state);
 
     this.setState({
       loading: false,
       search: '',
       data: [repo, ...this.state.data],
     });
-    console.tron.log(this.state);
+
     this.saveRepository(this.state.data);
   };
 

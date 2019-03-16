@@ -2,22 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  View, Text, Image, TouchableOpacity,
+  View, Text, Image, TouchableOpacity, Linking,
 } from 'react-native';
-import { withNavigation } from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
 
-const Repository = ({ navigation, repository }) => (
-  <TouchableOpacity onPress={() => navigation.navigate('Issues', { repository })}>
+const Issue = ({ issue }) => (
+  <TouchableOpacity
+    onPress={() => {
+      Linking.openURL(issue.html_url);
+    }}
+  >
     <View style={styles.container}>
       <View style={styles.info}>
-        <Image style={styles.avatar} source={{ uri: repository.avatar }} />
+        <Image style={styles.avatar} source={{ uri: issue.user.avatar_url }} />
         <View style={styles.textInfo}>
-          <Text style={styles.name}>{repository.name}</Text>
-          <Text style={styles.organization}>{repository.organization}</Text>
+          <Text style={styles.title} numberOfLines={1}>
+            {issue.title}
+          </Text>
+          <Text style={styles.user}>{issue.user.login}</Text>
         </View>
       </View>
       <Icon style={styles.icon} name="angle-right" size={16} />
@@ -25,12 +30,12 @@ const Repository = ({ navigation, repository }) => (
   </TouchableOpacity>
 );
 
-Repository.propTypes = {
-  repository: PropTypes.shape({
+Issue.propTypes = {
+  issue: PropTypes.shape({
     avatar: PropTypes.string,
     name: PropTypes.string,
     organization: PropTypes.string,
   }).isRequired,
 };
 
-export default withNavigation(Repository);
+export default Issue;
