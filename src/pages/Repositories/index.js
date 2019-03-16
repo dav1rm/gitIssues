@@ -82,7 +82,7 @@ export default class Repositories extends Component {
         data: [repo, ...data],
       });
 
-      await AsyncStorage.setItem('@GitIssues:repositories', JSON.stringify(this.state.data));
+      await AsyncStorage.setItem('@GitIssues:repositories', JSON.stringify([repo, ...data]));
     } catch (err) {
       this.setState({
         loading: false,
