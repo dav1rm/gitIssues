@@ -55,6 +55,11 @@ export default class Repositories extends Component {
       return;
     }
 
+    if (data.find(repository => `${repository.organization}/${repository.name}` === search)) {
+      this.setState({ error: 'Repositório duplicado', loading: false });
+      return;
+    }
+
     try {
       const {
         data: {
