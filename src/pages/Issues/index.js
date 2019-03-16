@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import { View, FlatList, ActivityIndicator } from 'react-native';
+import {
+  View, FlatList, ActivityIndicator, Text,
+} from 'react-native';
 
 import api from '~/services/api';
 import styles from './styles';
@@ -16,7 +18,7 @@ export default class Issues extends Component {
     data: [],
     loading: false,
     refreshing: false,
-    search: '',
+    error: '',
   };
 
   componentDidMount() {
@@ -24,18 +26,22 @@ export default class Issues extends Component {
   }
 
   loadIssues = async () => {
+    this.setState({ refreshing: true, loading: true });
     const { navigation } = this.props;
     const { id } = navigation.getParam('repository');
-    this.setState({ refreshing: true, loading: true });
 
-    const { data } = await api.get(`/repositories/${id}/issues`);
+    try {
+      const { data } = await api.get(`/repositories/${id}/issues`);
 
-    this.setState({
-      loading: false,
-      data,
-    });
-
-    this.setState({ refreshing: false, loading: false });
+      this.setState({
+        data,
+        refreshing: false,
+        loading: false,
+        error: '',
+      });
+    } catch (err) {
+      this.setState({ refreshing: false, loading: false, error: 'Falha ao atualizar' });
+    }
   };
 
   renderListItem = ({ item }) => <Issue issue={item} />;
@@ -54,11 +60,10 @@ export default class Issues extends Component {
   };
 
   render() {
-    const { navigation } = this.props;
-    const id = navigation.getParam('id');
-    const { loading, search } = this.state;
+    const { loading, error } = this.state;
     return (
       <View style={styles.container}>
+        {!!error && <Text style={styles.error}>{error}</Text>}
         {loading ? <ActivityIndicator style={styles.loading} /> : this.renderList()}
       </View>
     );

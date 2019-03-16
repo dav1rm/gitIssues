@@ -10,6 +10,12 @@ const styles = StyleSheet.create({
   loading: {
     marginTop: metrics.baseMargin * 2,
   },
+
+  error: {
+    color: colors.danger,
+    marginHorizontal: metrics.baseMargin * 2,
+    paddingTop: metrics.basePadding,
+  },
 });
 
 export default styles;
