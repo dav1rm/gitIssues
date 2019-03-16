@@ -32,9 +32,12 @@ const Issue = ({ issue }) => (
 
 Issue.propTypes = {
   issue: PropTypes.shape({
-    avatar: PropTypes.string,
-    name: PropTypes.string,
-    organization: PropTypes.string,
+    id: PropTypes.number,
+    title: PropTypes.string,
+    user: PropTypes.shape({
+      avatar_url: PropTypes.string,
+      login: PropTypes.string,
+    }),
   }).isRequired,
 };
 

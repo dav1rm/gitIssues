@@ -28,6 +28,10 @@
       "error",
       "asc",
       { "ignoreClassNames": true, "ignoreStyleProperties": true }
+    ],
+    "camelcase": [
+      "error",
+      { "ignoreDestructuring": true, "properties": "never" }
     ]
   },
   "settings": {

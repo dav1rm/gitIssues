@@ -26,10 +26,14 @@ const Repository = ({ navigation, repository }) => (
 );
 
 Repository.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
   repository: PropTypes.shape({
-    avatar: PropTypes.string,
+    id: PropTypes.number,
     name: PropTypes.string,
     organization: PropTypes.string,
+    avatar: PropTypes.string,
   }).isRequired,
 };
 

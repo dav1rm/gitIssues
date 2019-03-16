@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import {
   View, FlatList, ActivityIndicator, Text,
 } from 'react-native';
@@ -13,6 +13,12 @@ export default class Issues extends Component {
     title: navigation.getParam('repository').name,
     headerRight: <View />,
   });
+
+  static propTypes = {
+    navigation: PropTypes.shape({
+      getParam: PropTypes.func,
+    }).isRequired,
+  };
 
   state = {
     data: [],
