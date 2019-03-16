@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 
 import {
   View,
+  Text,
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
   TextInput,
   AsyncStorage,
-  Text,
+  StatusBar,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -118,6 +119,7 @@ export default class Repositories extends Component {
     const { loading, search, error } = this.state;
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#f4f4f4" />
         {!!error && <Text style={styles.error}>{error}</Text>}
         <View style={styles.searchBar}>
           <TextInput
